@@ -3,11 +3,15 @@ package com.example.tictactoe
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(),View.onClickListener{
+class MainActivity : AppCompatActivity(), View.OnClickListener{
 
+    private lateinit var playerScore: TextView
     private lateinit var button1: Button
     private lateinit var button2: Button
     private lateinit var button3: Button
@@ -17,17 +21,22 @@ class MainActivity : AppCompatActivity(),View.onClickListener{
     private lateinit var button7: Button
     private lateinit var button8: Button
     private lateinit var button9: Button
+    private lateinit var resetButton: Button
 
     private var firstPlayer = ArrayList<Int>()
     private var secondPlayer = ArrayList<Int>()
-    private var activePlayer = 0
-    private var winnerPlayer = 0
+    private var activePlayer = 1
+
+    private var firstPlayerScore = 0
+    private var secondPlayerScore = 0
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init()
+        playerScore.text = "$firstPlayerScore : $secondPlayerScore"
     }
 
     private fun init(){
@@ -40,6 +49,8 @@ class MainActivity : AppCompatActivity(),View.onClickListener{
         button7 = findViewById(R.id.button7)
         button8 = findViewById(R.id.button8)
         button9 = findViewById(R.id.button9)
+        resetButton = findViewById(R.id.resetButton)
+        playerScore = findViewById(R.id.playerScore)
 
         button1.setOnClickListener(this)
         button2.setOnClickListener(this)
@@ -51,6 +62,40 @@ class MainActivity : AppCompatActivity(),View.onClickListener{
         button8.setOnClickListener(this)
         button9.setOnClickListener(this)
 
+        resetButton.setOnClickListener {
+
+            button1.text = ""
+            button2.text = ""
+            button3.text = ""
+            button4.text = ""
+            button5.text = ""
+            button6.text = ""
+            button7.text = ""
+            button8.text = ""
+            button9.text = ""
+
+            firstPlayer.clear()
+            secondPlayer.clear()
+
+            activePlayer = 1
+
+            disableButtons(true)
+
+        }
+
+
+    }
+
+    private fun disableButtons(isEnabled: Boolean) {
+        button1.isEnabled = isEnabled
+        button2.isEnabled = isEnabled
+        button3.isEnabled = isEnabled
+        button4.isEnabled = isEnabled
+        button5.isEnabled = isEnabled
+        button6.isEnabled = isEnabled
+        button7.isEnabled = isEnabled
+        button8.isEnabled = isEnabled
+        button9.isEnabled = isEnabled
 
     }
 
@@ -79,74 +124,124 @@ class MainActivity : AppCompatActivity(),View.onClickListener{
     private fun PlayGame(clickedView: Button, buttonNumber: Int) {
         if (activePlayer == 1) {
             clickedView.text = "X"
-            clickedView.setBackgroundColor(Color.BLACK)
+            clickedView.setTextColor(Color.BLUE)
             activePlayer = 2
             firstPlayer.add(buttonNumber)
         }
+
         else {
-            clickedView.text = "0"
-            clickedView.setBackgroundColor(Color.WHITE)
+            clickedView.text = "O"
+            clickedView.setTextColor(Color.RED)
             activePlayer = 1
             secondPlayer.add(buttonNumber)
         }
         clickedView.isEnabled = false
         check()
-}
-
-    private fun check() {
-        if (firstPlayer.contains(1) && firstPlayer.contains(2) && firstPlayer.contains(3)){
-            winnerPlayer = 1
-        }
-        if (firstPlayer.contains(4) && firstPlayer.contains(5) && firstPlayer.contains(6)){
-            winnerPlayer = 1
-        }
-        if (firstPlayer.contains(7) && firstPlayer.contains(8) && firstPlayer.contains(9)){
-            winnerPlayer = 1
-        }
-        if (firstPlayer.contains(1) && firstPlayer.contains(4) && firstPlayer.contains(7)){
-            winnerPlayer = 1
-        }
-        if (firstPlayer.contains(2) && firstPlayer.contains(5) && firstPlayer.contains(8)){
-            winnerPlayer = 1
-        }
-        if (firstPlayer.contains(3) && firstPlayer.contains(6) && firstPlayer.contains(9)){
-            winnerPlayer = 1
-        }
-        if (firstPlayer.contains(1) && firstPlayer.contains(5) && firstPlayer.contains(9)){
-            winnerPlayer = 1
-        }
-        if (firstPlayer.contains(3) && firstPlayer.contains(5) && firstPlayer.contains(7)){
-            winnerPlayer = 1
-        }
-
-        //second player
-
-        if (firstPlayer.contains(1) && firstPlayer.contains(2) && firstPlayer.contains(3)){
-            winnerPlayer = 2
-        }
-        if (firstPlayer.contains(4) && firstPlayer.contains(5) && firstPlayer.contains(6)){
-            winnerPlayer = 2
-        }
-        if (firstPlayer.contains(7) && firstPlayer.contains(8) && firstPlayer.contains(9)){
-            winnerPlayer = 2
-        }
-        if (firstPlayer.contains(1) && firstPlayer.contains(4) && firstPlayer.contains(7)){
-            winnerPlayer = 2
-        }
-        if (firstPlayer.contains(2) && firstPlayer.contains(5) && firstPlayer.contains(8)){
-            winnerPlayer = 2
-        }
-        if (firstPlayer.contains(3) && firstPlayer.contains(6) && firstPlayer.contains(9)){
-            winnerPlayer = 2
-
-        if (firstPlayer.contains(1) && firstPlayer.contains(5) && firstPlayer.contains(9)){
-            winnerPlayer = 2
-        }
-        if (firstPlayer.contains(3) && firstPlayer.contains(5) && firstPlayer.contains(7)){
-            winnerPlayer = 2
-        }
 
     }
 
+
+    private fun check() {
+        var winnerPlayer = 0
+
+        //first player win conditions
+
+        if (firstPlayer.contains(1) && firstPlayer.contains(2) && firstPlayer.contains(3)){
+            winnerPlayer = 1
+        }
+
+        if (firstPlayer.contains(4) && firstPlayer.contains(5) && firstPlayer.contains(6)){
+            winnerPlayer = 1
+        }
+
+        if (firstPlayer.contains(7) && firstPlayer.contains(8) && firstPlayer.contains(9)){
+            winnerPlayer = 1
+        }
+
+        if (firstPlayer.contains(1) && firstPlayer.contains(4) && firstPlayer.contains(7)){
+            winnerPlayer = 1
+        }
+
+        if (firstPlayer.contains(2) && firstPlayer.contains(5) && firstPlayer.contains(8)){
+            winnerPlayer = 1
+        }
+
+        if (firstPlayer.contains(3) && firstPlayer.contains(6) && firstPlayer.contains(9)){
+            winnerPlayer = 1
+        }
+
+        if (firstPlayer.contains(1) && firstPlayer.contains(5) && firstPlayer.contains(9)){
+            winnerPlayer = 1
+        }
+
+        if (firstPlayer.contains(3) && firstPlayer.contains(5) && firstPlayer.contains(7)){
+            winnerPlayer = 1
+        }
+
+        //second player win conditions
+
+        if (firstPlayer.contains(1) && firstPlayer.contains(2) && firstPlayer.contains(3)){
+            winnerPlayer = 2
+        }
+
+        if (firstPlayer.contains(4) && firstPlayer.contains(5) && firstPlayer.contains(6)){
+            winnerPlayer = 2
+        }
+
+        if (firstPlayer.contains(7) && firstPlayer.contains(8) && firstPlayer.contains(9)){
+            winnerPlayer = 2
+        }
+
+        if (firstPlayer.contains(1) && firstPlayer.contains(4) && firstPlayer.contains(7)){
+            winnerPlayer = 2
+        }
+
+        if (firstPlayer.contains(2) && firstPlayer.contains(5) && firstPlayer.contains(8)){
+            winnerPlayer = 2
+        }
+
+        if (firstPlayer.contains(3) && firstPlayer.contains(6) && firstPlayer.contains(9)) {
+            winnerPlayer = 2
+        }
+
+        if (firstPlayer.contains(1) && firstPlayer.contains(5) && firstPlayer.contains(9)){
+            winnerPlayer = 2
+        }
+
+        if (firstPlayer.contains(3) && firstPlayer.contains(5) && firstPlayer.contains(7)){
+            winnerPlayer = 2
+        }
+
+        //player 1 winning
+
+        if (winnerPlayer == 1) {
+            Toast.makeText(this, "Player 1 Wins", Toast.LENGTH_LONG).show()
+            disableButtons(false)
+            firstPlayerScore += 1
+        }
+
+        //player 2 winning
+
+        else if (winnerPlayer == 2) {
+            Toast.makeText(this, "Player 2 Wins", Toast.LENGTH_LONG).show()
+            disableButtons(false)
+            secondPlayerScore += 1
+        }
+
+        //Draw
+
+        else if (button1.text.isNotEmpty() &&
+            button2.text.isNotEmpty() &&
+            button3.text.isNotEmpty() &&
+            button4.text.isNotEmpty() &&
+            button5.text.isNotEmpty() &&
+            button6.text.isNotEmpty() &&
+            button7.text.isNotEmpty() &&
+            button8.text.isNotEmpty() &&
+            button9.text.isNotEmpty()) {
+                Toast.makeText(this, "It's a Draw", Toast.LENGTH_LONG).show()
+                disableButtons(false)
+            }
+        }
 
 }
