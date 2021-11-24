@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init()
-        playerScore.text = "$firstPlayerScore : $secondPlayerScore"
     }
 
     private fun init(){
@@ -83,7 +82,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
 
         }
 
-
     }
 
     private fun disableButtons(isEnabled: Boolean) {
@@ -125,15 +123,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         if (activePlayer == 1) {
             clickedView.text = "X"
             clickedView.setTextColor(Color.BLUE)
-            activePlayer = 2
             firstPlayer.add(buttonNumber)
+            activePlayer = 2
         }
 
         else {
             clickedView.text = "O"
             clickedView.setTextColor(Color.RED)
-            activePlayer = 1
             secondPlayer.add(buttonNumber)
+            activePlayer = 1
         }
         clickedView.isEnabled = false
         check()
@@ -143,6 +141,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
 
     private fun check() {
         var winnerPlayer = 0
+        playerScore.text = "$firstPlayerScore : $secondPlayerScore"
 
         //first player win conditions
 
@@ -180,35 +179,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
 
         //second player win conditions
 
-        if (firstPlayer.contains(1) && firstPlayer.contains(2) && firstPlayer.contains(3)){
+        if (secondPlayer.contains(1) && secondPlayer.contains(2) && secondPlayer.contains(3)){
             winnerPlayer = 2
         }
 
-        if (firstPlayer.contains(4) && firstPlayer.contains(5) && firstPlayer.contains(6)){
+        if (secondPlayer.contains(4) && secondPlayer.contains(5) && secondPlayer.contains(6)){
             winnerPlayer = 2
         }
 
-        if (firstPlayer.contains(7) && firstPlayer.contains(8) && firstPlayer.contains(9)){
+        if (secondPlayer.contains(7) && secondPlayer.contains(8) && secondPlayer.contains(9)){
             winnerPlayer = 2
         }
 
-        if (firstPlayer.contains(1) && firstPlayer.contains(4) && firstPlayer.contains(7)){
+        if (secondPlayer.contains(1) && secondPlayer.contains(4) && secondPlayer.contains(7)){
             winnerPlayer = 2
         }
 
-        if (firstPlayer.contains(2) && firstPlayer.contains(5) && firstPlayer.contains(8)){
+        if (secondPlayer.contains(2) && secondPlayer.contains(5) && secondPlayer.contains(8)){
             winnerPlayer = 2
         }
 
-        if (firstPlayer.contains(3) && firstPlayer.contains(6) && firstPlayer.contains(9)) {
+        if (secondPlayer.contains(3) && secondPlayer.contains(6) && secondPlayer.contains(9)){
             winnerPlayer = 2
         }
 
-        if (firstPlayer.contains(1) && firstPlayer.contains(5) && firstPlayer.contains(9)){
+        if (secondPlayer.contains(1) && secondPlayer.contains(5) && secondPlayer.contains(9)){
             winnerPlayer = 2
         }
 
-        if (firstPlayer.contains(3) && firstPlayer.contains(5) && firstPlayer.contains(7)){
+        if (secondPlayer.contains(3) && secondPlayer.contains(5) && secondPlayer.contains(7)){
             winnerPlayer = 2
         }
 
@@ -230,7 +229,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
 
         //Draw
 
-        else if (button1.text.isNotEmpty() &&
+        else if (
+            button1.text.isNotEmpty() &&
             button2.text.isNotEmpty() &&
             button3.text.isNotEmpty() &&
             button4.text.isNotEmpty() &&
@@ -238,7 +238,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
             button6.text.isNotEmpty() &&
             button7.text.isNotEmpty() &&
             button8.text.isNotEmpty() &&
-            button9.text.isNotEmpty()) {
+            button9.text.isNotEmpty() ){
                 Toast.makeText(this, "It's a Draw", Toast.LENGTH_LONG).show()
                 disableButtons(false)
             }
